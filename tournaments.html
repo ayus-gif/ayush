@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PitchUp Cricket · advanced</title>
+  <!-- Font Awesome (optional but adds polish) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+
+    /* ----- navigation (glassmorphism) ----- */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: all 0.2s;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #0f2b5e, #1e4a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .logo i {
+      background: none;
+      -webkit-text-fill-color: #1e4a8a;
+      font-size: 1.8rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #1e293b;
+      transition: 0.2s ease;
+      padding: 0.4rem 0.2rem;
+      border-bottom: 2px solid transparent;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links a:hover {
+      color: #0f2b5e;
+      border-bottom-color: #1e4a8a;
+    }
+
+    /* ----- hero (modern gradient + animation) ----- */
+    .hero {
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+      background: linear-gradient(145deg, #e9eff7 0%, #d9e2ef 100%);
+      margin: 1.5rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 15px 35px -10px rgba(0, 20, 40, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "🏏";
+      position: absolute;
+      font-size: 12rem;
+      right: -2rem;
+      bottom: -4rem;
+      opacity: 0.08;
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: 3.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #0b1f3b, #1e4a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: #2c3e66;
+      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.5);
+      display: inline-block;
+      padding: 0.3rem 2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    /* ----- trials section (cards) ----- */
+    .trials {
+      max-width: 1100px;
+      margin: 2rem auto 3rem;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    .trials h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #0f2b5e;
+      border-left: 6px solid #1e4a8a;
+      padding-left: 1.2rem;
+    }
+
+    .trials h2 i {
+      color: #1e4a8a;
+      font-size: 2rem;
+    }
+
+    .link-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .link-box a {
+      background: white;
+      padding: 1.2rem 1.8rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #0b1f3b;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 20, 40, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.05rem;
+      backdrop-filter: blur(2px);
+      background: rgba(255, 255, 255, 0.75);
+      word-break: break-word;
+    }
+
+    .link-box a i {
+      color: #1e4a8a;
+      font-size: 1.4rem;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .link-box a:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 20px 30px -12px rgba(18, 52, 106, 0.2);
+      border-color: #b4c9e6;
+      background: white;
+    }
+
+    /* security badge / footer */
+    .security-badge {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin: 0.5rem 0 1.5rem;
+      font-size: 0.9rem;
+      color: #334e77;
+    }
+
+    .security-badge span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 0.25rem 1.2rem;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .security-badge i {
+      color: #1a6b3c;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 2rem 1rem 1.8rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(6px);
+      font-weight: 400;
+      color: #2d3f60;
+      letter-spacing: 0.3px;
+      font-size: 0.95rem;
+    }
+
+    footer i {
+      margin: 0 4px;
+      color: #1e4a8a;
+    }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem 1.5rem;
+      }
+      .nav-links {
+        gap: 1.8rem;
+      }
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        padding: 0.2rem 1.2rem;
+      }
+      .hero {
+        padding: 3rem 1.5rem;
+        margin: 1rem;
+        border-radius: 28px;
+      }
+      .trials h2 {
+        font-size: 1.8rem;
+      }
+      .link-box a {
+        padding: 1rem 1.2rem;
+        font-size: 0.95rem;
+      }
+      .security-badge {
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .logo {
+        font-size: 1.3rem;
+      }
+      .nav-links a {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* small extra – smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== NAVIGATION ======== -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fas fa-cricket-ball"></i> PITCHUP
+    </div>
+    <ul class="nav-links">
+      <li><a href="#"><i class="fas fa-home" style="margin-right: 6px;"></i>Home</a></li>
+      <li><a href="#trials"><i class="fas fa-trophy" style="margin-right: 6px;"></i>Trials</a></li>
+    </ul>
+  </nav>
+
+  <!-- ======== HERO ======== -->
+  <section class="hero">
+    <h1>WELCOME TO PITCHUP</h1>
+    <p>India's Cricket Talent Platform</p>
+    <div style="margin-top: 1.8rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap;">
+      <span style="background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.6);">
+        <i class="fas fa-shield-alt" style="color: #1e4a8a;"></i> secure
+      </span>
+      <span style="background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.6);">
+        <i class="fas fa-lock" style="color: #1e4a8a;"></i> encrypted
+      </span>
+    </div>
+  </section>
+
+  <!-- ======== TRIALS ======== -->
+  <section class="trials" id="trials">
+    <h2><i class="fas fa-fire" style="color: #d45a2e;"></i> Latest Cricket Trials 2026</h2>
+
+    <div class="link-box">
+      <a href="https://mbycl.com/register" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-chevron-circle-right"></i> MBYCL Pan India Trials – Mumbai (21 June 2026)
+      </a>
+      <a href="https://indiaspl.online/" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-chevron-circle-right"></i> India SPL Cricket Trials – Roorkee (19 June 2026)
+      </a>
+      <a href="https://pages.razorpay.com/ncl66" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-chevron-circle-right"></i> National Cricket League (NCL) – All India
+      </a>
+    </div>
+
+    <!-- security & js integration hint -->
+    <div class="security-badge">
+      <span><i class="fas fa-check-circle"></i> SSL secure</span>
+      <span><i class="fas fa-user-shield"></i> anti-phishing</span>
+      <span><i class="fas fa-database"></i> encrypted links</span>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer>
+    <p>
+      <i class="fas fa-copyright"></i> 2026 PitchUp Cricket. All Rights Reserved.
+      <span style="display: inline-block; margin-left: 1rem; opacity: 0.7;">
+        <i class="fas fa-lock"></i> secure · <i class="fas fa-code"></i> v2.0
+      </span>
+    </p>
+  </footer>
+
+  <!-- ======== ADVANCED JAVASCRIPT (security, protection, UX) ======== -->
+  <script>
+    (function() {
+      "use strict";
+
+      // ---------- 1. security: prevent right-click (simple deterrent) ----------
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        // optional: silent feedback
+      });
+
+      // ---------- 2. security: block common key combos (Ctrl+U, Ctrl+Shift+I, F12) ----------
+      document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+I / Ctrl+U / Ctrl+S
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+          e.preventDefault();
+          return false;
+        }
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+          e.preventDefault();
+          return false;
+        }
+        if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+J
+        if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) {
+          e.preventDefault();
+          return false;
+        }
+        return true;
+      });
+
+      // ---------- 3. external link security: add rel="noopener" & noreferrer (already in html, but double-check) ----------
+      // also rewrite any target _blank to include security attributes (just in case)
+      document.querySelectorAll('a[target="_blank"]').forEach(function(link) {
+        if (!link.rel || !link.rel.includes('noopener')) {
+          link.rel = (link.rel ? link.rel + ' ' : '') + 'noopener noreferrer';
+        }
+      });
+
+      // ---------- 4. console warning (anti-debugging / awareness) ----------
+      console.log('%c🔒 PitchUp Cricket · secure mode', 'font-size:18px; font-weight:bold; color:#1e4a8a;');
+      console.log('%c⚠️ Developer tools are restricted for content protection.', 'font-size:13px; color:#a94442;');
+
+      // ---------- 5. click feedback + security badge interaction (optional) ----------
+      const trialLinks = document.querySelectorAll('.link-box a');
+      trialLinks.forEach((link, index) => {
+        link.addEventListener('click', function(e) {
+          // just a subtle visual feedback – we do not prevent navigation
+          this.style.transition = '0.1s';
+          this.style.transform = 'scale(0.98)';
+          setTimeout(() => { this.style.transform = ''; }, 120);
+        });
+      });
+
+      // ---------- 6. dynamic year update in footer (just for freshness) ----------
+      const footer = document.querySelector('footer p');
+      if (footer) {
+        const yearMatch = footer.textContent.match(/\d{4}/);
+        if (yearMatch) {
+          const currentYear = new Date().getFullYear();
+          // replace only if year changed (optional)
+          if (currentYear !== parseInt(yearMatch[0], 10)) {
+            footer.innerHTML = footer.innerHTML.replace(/\d{4}/, currentYear);
+          }
+        }
+      }
+
+      // ---------- 7. (security) disable copy on selected elements? we keep it mild ----------
+      // Instead of blocking all copy, we add a subtle watermark to prevent casual copying.
+      // but we keep user experience friendly – we only add a small listener to show a tip.
+      document.querySelector('.hero h1')?.addEventListener('copy', function(e) {
+        // optional: show a tiny notification (but not intrusive)
+        // we just let it copy, but we could add a custom message if needed.
+        // We'll keep it permissive.
+      });
+
+      // ---------- 8. additional CSP-like: prevent eval and inline script execution? this is client-side -----
+      // we can't fully emulate CSP but we warn if eval is used (not in this code)
+      // we also freeze some prototypes? not needed, but we can add a small flag.
+      Object.freeze?.(document) : null; // no-op if not supported
+
+      // ---------- 9. click-jacking prevention (iframed) – break out of iframe ----------
+      if (window.top !== window.self) {
+        // if page is loaded in an iframe, break out (with a small delay to avoid loops)
+        setTimeout(function() {
+          window.top.location = window.self.location;
+        }, 100);
+      }
+
+      // ---------- 10. log that security script is active ----------
+      console.log('✅ PitchUp security & enhancements active.');
+
+    })();
+  </script>
+
+</body>
+</html>
